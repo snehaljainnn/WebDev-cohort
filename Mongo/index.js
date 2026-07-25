@@ -19,11 +19,40 @@ const {UserModel,TodoModel}=require("./db");
 mongoose.connect("mongodb+srv://jainsnehal9946_db_user:kvMxd5ZmPMU9fbxI@cluster0.ororj5j.mongodb.net/to-do-app-database");
 
 const bcrypt=require("bcrypt");
+const {z}=require("zod");
+//zod librarary is basically used for input validations
+
 
 app.post("/signup",async function(req,res){
+    //before fetching anything you first had to SET AND VALIDATE THE SCHEMA of the incoming data
+    //LIKE YOU NEED TO RESTRICT USER FOR WHAT THEY CAN SEND
+    const requiredBody=z.object({
+        username:z.string().min(3).max(100).email(),
+        password:z.string().min(4).max(100),
+        age:z.number().positive().minValue(10).maxValue(100)
+
+    });
+    //AFTER YOU HAVE STRICTLY DEFINED THE VALIDATIONS FOR YOUR INPUT YOU CAN DO WHATEVER YOU WANT
+
+
     const username=req.body.username;
     const password=req.body.password;
     const age=req.body.age;
+
+    //AFTER FETCHING THE DATA YOU MUST CHECK WEATHER IT IS VALIDATED OR NOT
+    //so you now basically parse the incoming req.body
+    const parsedDatawithSuccess=requiredBody.safeParse(req.body);
+
+    if(!parsedDatawithSuccess.success)////means after parsing the data recieved from req.body does not matches with the strict schema validation we made by zod
+    {
+        res.json({
+            message:"Incorrect format",
+            error:parsedDatawithSuccess.error//this function lets user know what actually is
+            //wrong with their entered data
+        });
+        return;
+
+    }
     
 
 
@@ -129,7 +158,7 @@ function auth(req,res,next)
     //now data can be faked but id cannot be
     if(decodedData)//means if the decoded data matches with the data present in database
     {
-        req.userID=decodedData._id;
+        req.userID=decodedData.id;
         next();//call the next lineage function
     }else{
         res.status(403).json({
