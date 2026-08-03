@@ -16,7 +16,7 @@ const jwtsecret="Shubh";
 //import the data coming from database
 const mongoose=require('mongoose');
 const {UserModel,TodoModel}=require("./db");
-mongoose.connect("mongodb+srv://jainsnehal9946_db_user:kvMxd5ZmPMU9fbxI@cluster0.ororj5j.mongodb.net/to-do-app-database");
+mongoose.connect("connection-url-username-password/to-do-app-database");
 
 const bcrypt=require("bcrypt");
 const {z}=require("zod");
