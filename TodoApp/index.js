@@ -6,7 +6,7 @@ const cors=require("cors");
 app.use(cors());
 //done with cors
 const jwt=require("jsonwebtoken");
-const jwtsecret="digfie823e0dhobxahhod";
+const jwtsecret="some-secret-key";
 //done with jwt library
 const bcrypt=require("bcrypt");
 //donw with bcrypt
@@ -14,7 +14,7 @@ const {z}=require("zod");
 //done with zod for input validations
 const mongoose=require("mongoose");
 const {userModel,todoModel}=require("./db");
-mongoose.connect("mongodb+srv://jainsnehal9946_db_user:kvMxd5ZmPMU9fbxI@cluster0.ororj5j.mongodb.net/TODO");
+mongoose.connect("connection-url-username-password/TODO");
 //done with inloading usermodel and todomodel
 //done with cluster conectivity
 
